@@ -4,15 +4,15 @@ Table of Contents
   * [Uncover Santa's Gift List](#uncover-santas-gift-list)
   * [Investigate S3 Bucket](#investigate-s3-bucket)
 
-Uncover Santa's Gift List
-==========================
+# Main Story
+
+## Uncover Santa's Gift List
 
 As you show up at the bottom of the mount, wide eyed and ready to meet Santa, you eye the festive gondola with baited breath. However, before going you first talk to Jingle Ringford to get a bit of information. He tells you there is a Wishlist hidden on the billboard next to the road! You have to know what everyone wants! You download the image by clicking on the billboard and see that there is a swirl over the Wishlist. No fear, you're a cybersecurity expert and these things happen. You start up GIMP and open the image. Being the lazy slacker you are, instead of using the select tool you just simply crop out everything you don't want. Now utilizing the Whril and Pinch distoration feature (found under Filters -> Distorts -> Whirl and Pinch), you begin to spin the image noticing that you need to go negitve on the whirl to get the image to spin in the right direction. Landing on a whirl of -330.4 you finally can read the wishlist and see that Josh Wright is wishing for Proxmark
 
 ![image](https://user-images.githubusercontent.com/6153549/116789179-9c9a7680-aa7b-11eb-8517-5696ef7ac6f4.png)
 
-Investigate S3 Bucket
-=========================
+## Investigate S3 Bucket
 
 Now that you've arrived on the mountain you see Santa, bowl full of jelly and all, but he's not laughing. After helping Shinny Upatree he tells you about an issue with the Wrapper3000 and points you to the table beside him. Time to work on some S3 buckets!
 
