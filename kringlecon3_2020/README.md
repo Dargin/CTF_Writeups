@@ -3,6 +3,9 @@ Table of Contents
 <!--ts-->
   * [Uncover Santa's Gift List](#uncover-santas-gift-list)
   * [Investigate S3 Bucket](#investigate-s3-bucket)
+  * [Point-of-sale Password Recovery](#point-of-sale-password-recovery)
+
+<!--te-->
 
 # Main Story
 
@@ -26,3 +29,17 @@ Now we got an interesting file that ends in xxd - a quick google search tells us
 North Pole: The Frostiest Place on Earth
 
 ![image](https://user-images.githubusercontent.com/6153549/116791626-93b0a180-aa89-11eb-92e2-7a8b7b4990f1.png)
+
+## Point-of-sale Password Recovery
+
+How terrible! Sugarplum Mary has been locked out of the PoS. Luckily there is an offline copy of the file.
+
+Download it to a linux box, and in Kali right click the file and open with the archive manager!
+![image](https://user-images.githubusercontent.com/6153549/117227692-6fd0c100-ade5-11eb-89fa-83e9831cccd2.png)
+
+this will show you files, on the top click "extract" and pick where to save. To make it easier rename the $PLUGINSDIR to something else. Now go into that folder and extract the app-64.7z file.
+
+now go into the new folder and browse into resources, in here you'll find the app.asar
+
+in Kali from the command prompt run 'sudo apt install npm' to install npm if it's not already, then run the command 'sudo npm install -g asar' to install asar, now in the command prompt cd into the directory with the app.asar and run 'asar -extract app.asar sourcecode' - this will give you the source code. Now take a look at the main.js and see the password.
+![image](https://user-images.githubusercontent.com/6153549/117227733-824afa80-ade5-11eb-99a5-c6dfc001d37f.png)
