@@ -1,3 +1,5 @@
 flag.txt
 .gdb_history
 core
+pattern.txt
+peda-session-vuln.txt
