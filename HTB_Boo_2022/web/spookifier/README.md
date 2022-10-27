@@ -9,9 +9,9 @@ so the spookify and change_font seem to just take our text and convert it to the
 ![image](https://user-images.githubusercontent.com/6153549/198296913-b02a37f3-8528-4099-b250-34873930ba44.png)
 
 So knowing this lets try a basic SSTI (ServerSide Template Injection) to see if it works and then also to try and determine what the language might be. Most of the write-ups will talk about using {{ variable }} -- however as we see in the template, that's not the format being used here. So lets modify the basic injection like this:
-
+```
 ${7*'7'}
-
+```
 we see that gives us 7777777 in the output, telling us our injection worked and that the site is using Jinja2. From here we know we can execute python commands, I spent a lot time trying to get injections working from various write-ups but either things weren't loaded (such as config.items()) or they had characters that were not in our list (I'm looking at you _ and []).
 
 Finally after thinking for a bit and clicking that it's just Python I used the same payload as Evaluation deck and boom.
