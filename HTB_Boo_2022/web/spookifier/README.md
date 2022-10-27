@@ -14,6 +14,6 @@ ${7*'7'}
 ```
 we see that gives us 7777777 in the output, telling us our injection worked and that the site is using Jinja2. From here we know we can execute python commands, I spent a lot time trying to get injections working from various write-ups but either things weren't loaded (such as config.items()) or they had characters that were not in our list (I'm looking at you _ and []).
 
-Finally after thinking for a bit and clicking that it's just Python I used the same payload as Evaluation deck and boom.
+Finally after thinking for a bit, it clicked that it's just Python and I used the same payload as Evaluation deck.
 
 ![image](https://user-images.githubusercontent.com/6153549/198299697-4565f237-ed5e-4b96-88eb-6507ab467a05.png)
