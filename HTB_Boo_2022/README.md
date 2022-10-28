@@ -9,4 +9,4 @@
 - <a href="https://github.com/Dargin/CTF_Writeups/tree/main/HTB_Boo_2022/for">Forensics</a>
   + <a href="https://github.com/Dargin/CTF_Writeups/tree/main/HTB_Boo_2022/for/wrong_spooky_season">Wrong Spooky Season</a>
   + <a href="https://github.com/Dargin/CTF_Writeups/tree/main/HTB_Boo_2022/for/trick_or_breach">Trick or Breach</a>
-  + < href="https://github.com/Dargin/CTF_Writeups/tree/main/HTB_Boo_2022/for/halloween_invitation">Halloween Invitation</a>
+  + <a href="https://github.com/Dargin/CTF_Writeups/tree/main/HTB_Boo_2022/for/halloween_invitation">Halloween Invitation</a>
